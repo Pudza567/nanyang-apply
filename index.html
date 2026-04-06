@@ -424,7 +424,7 @@
 
     @page {
       size: A4 portrait;
-      margin: 0;
+      margin: 8mm 10mm;
     }
 
     html, body {
@@ -432,6 +432,7 @@
       margin: 0 !important;
       padding: 0 !important;
       background: white !important;
+      font-size: 11px !important;
     }
 
     /* ซ่อน UI ทั้งหมด */
@@ -439,124 +440,129 @@
     .btn, #btnSheets, #sheetsMsg,
     #emailSending, #emailDone, #emailError, #actionBtns { display: none !important; }
 
-    /* แสดงเฉพาะ 3 หน้าเนื้อหา */
+    /* card1 = หน้า 1, card2 = หน้า 2, card3 = หน้า 3 */
     #card1, #card2, #card3 {
       display: block !important;
-      width: 210mm !important;
-      height: 297mm !important;
-      max-height: 297mm !important;
-      overflow: hidden !important;
+      width: 100% !important;
       page-break-after: always !important;
       break-after: page !important;
       margin: 0 !important;
       padding: 0 !important;
       box-shadow: none !important;
       border-radius: 0 !important;
-      position: relative !important;
+      min-height: unset !important;
+      max-height: unset !important;
+      overflow: visible !important;
     }
 
     #card4, #card5 { display: none !important; }
 
-    /* Header */
+    /* Header แต่ละหน้า */
     .a4-header {
       background: #1D3FAB !important;
-      padding: 10px 14mm !important;
+      padding: 8px 10px !important;
       display: flex !important;
       align-items: center !important;
-      gap: 10px !important;
+      gap: 8px !important;
     }
-    .a4-header-logo { width: 44px !important; height: 44px !important; }
-    .a4-header-text h2 { font-size: 15px !important; color: white !important; }
-    .a4-header-text p  { font-size: 10px !important; color: rgba(255,255,255,0.7) !important; }
+    .a4-header-logo { width: 38px !important; height: 38px !important; }
+    .a4-header-text h2 { font-size: 13px !important; color: white !important; margin: 0 !important; }
+    .a4-header-text p  { font-size: 9px !important; color: rgba(255,255,255,0.75) !important; margin: 0 !important; }
     .a4-header-badge {
       background: #E8401C !important;
       color: white !important;
-      font-size: 10px !important;
-      padding: 3px 10px !important;
+      font-size: 9px !important;
+      padding: 2px 8px !important;
       border-radius: 20px !important;
       margin-left: auto !important;
     }
 
-    /* Section bar */
+    /* Section bars */
     .section-bar {
       background: #E8401C !important;
       color: white !important;
-      font-size: 11px !important;
-      padding: 5px 14mm !important;
+      font-size: 10px !important;
+      padding: 4px 10px !important;
     }
 
-    /* Body */
+    /* Body padding แคบลง */
     .a4-body {
-      padding: 6mm 14mm !important;
-      overflow: hidden !important;
+      padding: 5px 10px 8px !important;
     }
 
-    /* Typography */
-    body, input, select, textarea, label, p, span, td, th {
-      font-family: 'Sarabun', sans-serif !important;
-      font-size: 11px !important;
-      line-height: 1.4 !important;
-    }
+    /* ทุก text element */
+    body, p, span, div, td, th, li { font-size: 11px !important; line-height: 1.35 !important; }
 
     label {
-      font-size: 10px !important;
+      font-size: 9.5px !important;
       font-weight: 700 !important;
       color: #1D3FAB !important;
+      margin-bottom: 0 !important;
     }
 
-    /* Form inputs - แสดงค่าที่กรอก */
+    /* Inputs */
     input[type=text], input[type=email], input[type=tel],
     input[type=date], input[type=number], select, textarea {
       border: none !important;
-      border-bottom: 0.5px solid #aaa !important;
+      border-bottom: 0.5px solid #999 !important;
       background: transparent !important;
       box-shadow: none !important;
-      padding: 0 2px !important;
+      padding: 0 1px !important;
       font-size: 11px !important;
       border-radius: 0 !important;
+      height: 18px !important;
+      line-height: 1.2 !important;
+    }
+    textarea {
       height: auto !important;
-      min-height: 0 !important;
+      min-height: 24px !important;
     }
 
-    textarea { min-height: 30px !important; resize: none !important; }
-
+    /* Radio / checkbox */
     input[type=radio], input[type=checkbox] {
-      width: 11px !important; height: 11px !important;
+      width: 10px !important; height: 10px !important;
+      margin: 0 !important;
     }
+    .radio-label, .check-label { font-size: 10.5px !important; gap: 3px !important; }
+    .radio-group, .check-group { gap: 3px 8px !important; padding: 1px 0 !important; }
 
-    /* Grid compact */
-    .form-grid { gap: 4px 10px !important; }
-    .form-group { gap: 2px !important; margin-bottom: 2px !important; }
+    /* Grid */
+    .form-grid { gap: 3px 8px !important; }
+    .form-grid.three { grid-template-columns: 1fr 1fr 1fr !important; }
+    .form-group { gap: 1px !important; margin-bottom: 3px !important; }
+
+    /* Section divider */
     .section-divider {
-      padding: 6px 0 4px !important;
-      margin-bottom: 6px !important;
-      font-size: 10px !important;
+      padding: 5px 0 3px !important;
+      margin-bottom: 5px !important;
+      font-size: 9.5px !important;
+      border-bottom: 1.5px solid #dbeafe !important;
     }
-
-    /* Radio/checkbox row */
-    .radio-group, .check-group { gap: 4px 10px !important; padding: 2px 0 !important; }
-    .radio-label, .check-label { font-size: 11px !important; gap: 3px !important; }
 
     /* Tables */
-    .data-table, .lang-table { font-size: 10px !important; margin-top: 3px !important; }
-    .data-table th, .lang-table th { padding: 4px 5px !important; font-size: 10px !important; }
-    .data-table td, .lang-table td { padding: 2px 4px !important; }
-    .data-table th { background: #1D3FAB !important; }
-    .lang-table th { background: #E8401C !important; }
-
-    /* Skills grid */
-    .skill-grid { gap: 4px !important; margin-top: 4px !important; }
-    .skill-item { padding: 3px 7px !important; font-size: 10px !important; border: 0.5px solid #ccc !important; }
-
-    /* Photo box */
-    .photo-box {
-      width: 80px !important; height: 100px !important;
-      border: 1px dashed #aaa !important;
+    .data-table { font-size: 9.5px !important; margin-top: 2px !important; }
+    .data-table th { padding: 3px 4px !important; font-size: 9px !important; background: #1D3FAB !important; }
+    .data-table td { padding: 2px 3px !important; }
+    .lang-table { font-size: 9.5px !important; margin-top: 2px !important; }
+    .lang-table th { padding: 3px 4px !important; font-size: 9px !important; background: #E8401C !important; }
+    .lang-table td { padding: 2px 3px !important; }
+    .data-table input, .lang-table input, .data-table select, .lang-table select {
+      font-size: 9.5px !important; height: 16px !important; padding: 0 !important;
     }
 
-    /* Terms box */
-    .terms-box { padding: 8px 10px !important; margin-top: 6px !important; }
-    .terms-box p { font-size: 10px !important; line-height: 1.5 !important; }
+    /* Skills */
+    .skill-grid { gap: 3px !important; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important; }
+    .skill-item { padding: 2px 6px !important; font-size: 9.5px !important; border: 0.5px solid #ccc !important; border-radius: 4px !important; }
+
+    /* Photo box */
+    .photo-box { width: 70px !important; height: 90px !important; }
+
+    /* Terms */
+    .terms-box { padding: 6px 8px !important; margin-top: 4px !important; border-radius: 6px !important; }
+    .terms-box p { font-size: 9px !important; line-height: 1.5 !important; }
+
+    /* Sign area */
+    .sign-area { margin-top: 6px !important; }
   }
 
   @media (max-width: 680px) {
