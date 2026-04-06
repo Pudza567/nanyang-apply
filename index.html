@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ใบสมัครงาน - บริษัท นันยาง มาร์เก็ตติ้ง จำกัด</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1065,7 +1066,19 @@
         ข้อมูลของท่านถูกบันทึกเรียบร้อยแล้ว<br>
         ทีม HR จะติดต่อกลับท่านโดยเร็วที่สุด
       </p>
-      <div class="action-buttons">
+      <div id="emailSending" style="display:none; padding:20px; text-align:center;">
+        <div style="font-size:32px; margin-bottom:8px;">⏳</div>
+        <p style="color:var(--navy); font-weight:600;">กำลังส่ง Email ให้ HR...</p>
+      </div>
+      <div id="emailDone" style="display:none; padding:16px; background:#f0fdf4; border-radius:10px; border:1.5px solid #86efac; margin-top:8px;">
+        <p style="color:#166534; font-weight:700; font-size:15px;">✅ ส่ง Email ให้ HR เรียบร้อยแล้ว!</p>
+        <p style="color:#166534; font-size:13px; margin-top:4px;">HR จะได้รับข้อมูลใบสมัครของท่านทาง patinya.ar@nanyang.co.th</p>
+      </div>
+      <div id="emailError" style="display:none; padding:16px; background:#fef2f2; border-radius:10px; border:1.5px solid #fca5a5; margin-top:8px;">
+        <p style="color:#991b1b; font-weight:700; font-size:15px;">❌ ส่ง Email ไม่สำเร็จ</p>
+        <p style="color:#991b1b; font-size:13px;">กรุณาบันทึก PDF แล้วส่งมาที่ patinya.ar@nanyang.co.th แทนครับ</p>
+      </div>
+      <div class="action-buttons" id="actionBtns">
         <button class="btn btn-print" onclick="printForm()">🖨️ พิมพ์ใบสมัคร</button>
         <button class="btn btn-pdf" onclick="savePDF()">📄 บันทึก PDF</button>
         <button class="btn btn-sheets" id="btnSheets" onclick="sendToSheets()">📊 ส่งเข้า Google Sheets</button>
@@ -1217,6 +1230,8 @@ function submitForm() {
   currentPage = 5;
   showPage(5);
   window.scrollTo({top: 0, behavior: 'smooth'});
+  // Auto send email
+  setTimeout(() => sendEmailToHR(), 500);
 }
 
 function collectData() {
@@ -1319,6 +1334,100 @@ function savePDF() {
   document.title = buildDocTitle();
   window.print();
   setTimeout(() => { document.title = prevTitle; }, 1000);
+}
+
+
+// ---- EmailJS Config ----
+// ปัดต้องใส่ค่าเหล่านี้หลังสมัคร EmailJS
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+
+async function sendEmailToHR() {
+  const sending = document.getElementById('emailSending');
+  const done    = document.getElementById('emailDone');
+  const error   = document.getElementById('emailError');
+  const btns    = document.getElementById('actionBtns');
+
+  // ถ้ายังไม่ตั้งค่า EmailJS ให้ข้ามไป
+  if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') return;
+
+  sending.style.display = 'block';
+  btns.style.display = 'none';
+
+  const d = collectData();
+
+  // สร้าง HTML สวยๆ สำหรับ Email body
+  const bodyHTML = `
+ใบสมัครงาน — ${d.fname} ${d.lname}
+==========================================
+📌 ตำแหน่งที่สมัคร : ${d.pos1}${d.pos2 !== '-' ? ' / ' + d.pos2 : ''}
+💰 เงินเดือนที่หวัง : ${d.salary_expect} บาท
+📅 วันที่สมัคร     : ${d.timestamp}
+
+👤 ข้อมูลส่วนตัว
+------------------------------------------
+ชื่อ-นามสกุล : ${d.fname} ${d.lname} (${d.nickname})
+วันเกิด      : ${d.birthdate}  อายุ: ${d.age} ปี
+มือถือ       : ${d.phone_mobile}
+Email        : ${d.email}
+Line ID      : ${d.line_id}
+ที่อยู่      : ${d.addr_no} ม.${d.addr_moo} ถ.${d.addr_road} ต.${d.addr_sub} อ.${d.addr_dist} จ.${d.addr_prov} ${d.addr_zip}
+เลขบัตรฯ     : ${d.id_card}
+น้ำหนัก/สูง  : ${d.weight} กก. / ${d.height} ซม.
+สถานภาพ      : ${d.marital}
+
+🎓 การศึกษา
+------------------------------------------
+${d.edu_level_1 !== '-' ? d.edu_level_1 + ' : ' + d.edu_school_1 + ' สาขา ' + d.edu_major_1 + ' (' + d.edu_year_1 + ')' : ''}
+${d.edu_level_2 !== '-' ? d.edu_level_2 + ' : ' + d.edu_school_2 + ' สาขา ' + d.edu_major_2 + ' (' + d.edu_year_2 + ')' : ''}
+${d.edu_level_3 !== '-' ? d.edu_level_3 + ' : ' + d.edu_school_3 + ' สาขา ' + d.edu_major_3 + ' (' + d.edu_year_3 + ')' : ''}
+${d.edu_level_4 !== '-' ? d.edu_level_4 + ' : ' + d.edu_school_4 + ' สาขา ' + d.edu_major_4 + ' (' + d.edu_year_4 + ')' : ''}
+
+💼 ประวัติการทำงาน
+------------------------------------------
+${d.work_co_1 !== '-' ? '1. ' + d.work_co_1 + ' | ' + d.work_from_1 + '-' + d.work_to_1 + ' | ' + d.work_pos_end_1 + ' | เงินเดือน ' + d.work_salary_1 + ' บาท | ออกเพราะ: ' + d.work_reason_1 : ''}
+${d.work_co_2 !== '-' ? '2. ' + d.work_co_2 + ' | ' + d.work_pos_end_2 + ' | เงินเดือน ' + d.work_salary_2 + ' บาท' : ''}
+${d.work_co_3 !== '-' ? '3. ' + d.work_co_3 + ' | ' + d.work_pos_end_3 + ' | เงินเดือน ' + d.work_salary_3 + ' บาท' : ''}
+เริ่มงานได้ภายใน: ${d.start_days} วัน
+
+💻 ทักษะ
+------------------------------------------
+โปรแกรม : ${d.skills}
+พิมพ์ดีด: ไทย ${d.type_th} | อังกฤษ ${d.type_en}
+งานอดิเรก: ${d.hobby}
+
+🤝 บุคคลอ้างอิง
+------------------------------------------
+1. ${d.ref1_name} โทร ${d.ref1_tel}
+2. ${d.ref2_name} โทร ${d.ref2_tel}
+
+📝 หมายเหตุ / ข้อมูลเพิ่มเติม
+------------------------------------------
+${d.self_desc}
+`;
+
+  try {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email   : 'patinya.ar@nanyang.co.th',
+      subject    : `ใบสมัครงาน — ${d.fname} ${d.lname} (${d.pos1})`,
+      applicant_name : `${d.fname} ${d.lname}`,
+      position   : d.pos1,
+      mobile     : d.phone_mobile,
+      email      : d.email,
+      message    : bodyHTML,
+      timestamp  : d.timestamp,
+    });
+    sending.style.display = 'none';
+    done.style.display = 'block';
+    btns.style.display = 'flex';
+  } catch(err) {
+    console.error('EmailJS error:', err);
+    sending.style.display = 'none';
+    error.style.display = 'block';
+    btns.style.display = 'flex';
+  }
 }
 
 showPage(1);
