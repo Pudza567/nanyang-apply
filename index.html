@@ -416,57 +416,147 @@
 
   /* ===== PRINT STYLES ===== */
   @media print {
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      box-sizing: border-box !important;
+    }
 
-    body { background: white !important; padding: 0 !important; margin: 0 !important; }
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
 
-    /* ซ่อน UI elements */
-    .top-bar, .progress-wrap, .notice-box, .nav-wrap,
-    .btn, #btnSheets, #sheetsMsg { display: none !important; }
-
-    /* แสดงทุก page รวมที่ไม่ active */
-    #card1, #card2, #card3 {
-      display: flex !important;
-      flex-direction: column !important;
+    html, body {
       width: 210mm !important;
-      min-height: 297mm !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: white !important;
+    }
+
+    /* ซ่อน UI ทั้งหมด */
+    .top-bar, .progress-wrap, .notice-box, .nav-wrap,
+    .btn, #btnSheets, #sheetsMsg,
+    #emailSending, #emailDone, #emailError, #actionBtns { display: none !important; }
+
+    /* แสดงเฉพาะ 3 หน้าเนื้อหา */
+    #card1, #card2, #card3 {
+      display: block !important;
+      width: 210mm !important;
+      height: 297mm !important;
       max-height: 297mm !important;
+      overflow: hidden !important;
+      page-break-after: always !important;
+      break-after: page !important;
       margin: 0 !important;
       padding: 0 !important;
       box-shadow: none !important;
       border-radius: 0 !important;
-      page-break-after: always !important;
-      break-after: page !important;
+      position: relative !important;
+    }
+
+    #card4, #card5 { display: none !important; }
+
+    /* Header */
+    .a4-header {
+      background: #1D3FAB !important;
+      padding: 10px 14mm !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+    }
+    .a4-header-logo { width: 44px !important; height: 44px !important; }
+    .a4-header-text h2 { font-size: 15px !important; color: white !important; }
+    .a4-header-text p  { font-size: 10px !important; color: rgba(255,255,255,0.7) !important; }
+    .a4-header-badge {
+      background: #E8401C !important;
+      color: white !important;
+      font-size: 10px !important;
+      padding: 3px 10px !important;
+      border-radius: 20px !important;
+      margin-left: auto !important;
+    }
+
+    /* Section bar */
+    .section-bar {
+      background: #E8401C !important;
+      color: white !important;
+      font-size: 11px !important;
+      padding: 5px 14mm !important;
+    }
+
+    /* Body */
+    .a4-body {
+      padding: 6mm 14mm !important;
       overflow: hidden !important;
     }
 
-    /* ซ่อน review และ success page */
-    #card4, #card5 { display: none !important; }
+    /* Typography */
+    body, input, select, textarea, label, p, span, td, th {
+      font-family: 'Sarabun', sans-serif !important;
+      font-size: 11px !important;
+      line-height: 1.4 !important;
+    }
 
-    /* สีพื้นหลัง */
-    .a4-header { background: #1D3FAB !important; }
-    .section-bar { background: #E8401C !important; }
-    .data-table th { background: #1D3FAB !important; }
-    .lang-table th { background: #E8401C !important; }
+    label {
+      font-size: 10px !important;
+      font-weight: 700 !important;
+      color: #1D3FAB !important;
+    }
 
-    /* Input fields */
+    /* Form inputs - แสดงค่าที่กรอก */
     input[type=text], input[type=email], input[type=tel],
     input[type=date], input[type=number], select, textarea {
       border: none !important;
-      border-bottom: 1px solid #ccc !important;
+      border-bottom: 0.5px solid #aaa !important;
       background: transparent !important;
       box-shadow: none !important;
-      padding: 1px 2px !important;
-      font-size: 12px !important;
+      padding: 0 2px !important;
+      font-size: 11px !important;
       border-radius: 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
     }
+
+    textarea { min-height: 30px !important; resize: none !important; }
 
     input[type=radio], input[type=checkbox] {
-      width: 13px !important; height: 13px !important;
+      width: 11px !important; height: 11px !important;
     }
 
-    .a4-body { overflow: hidden !important; }
-    table { page-break-inside: avoid !important; }
+    /* Grid compact */
+    .form-grid { gap: 4px 10px !important; }
+    .form-group { gap: 2px !important; margin-bottom: 2px !important; }
+    .section-divider {
+      padding: 6px 0 4px !important;
+      margin-bottom: 6px !important;
+      font-size: 10px !important;
+    }
+
+    /* Radio/checkbox row */
+    .radio-group, .check-group { gap: 4px 10px !important; padding: 2px 0 !important; }
+    .radio-label, .check-label { font-size: 11px !important; gap: 3px !important; }
+
+    /* Tables */
+    .data-table, .lang-table { font-size: 10px !important; margin-top: 3px !important; }
+    .data-table th, .lang-table th { padding: 4px 5px !important; font-size: 10px !important; }
+    .data-table td, .lang-table td { padding: 2px 4px !important; }
+    .data-table th { background: #1D3FAB !important; }
+    .lang-table th { background: #E8401C !important; }
+
+    /* Skills grid */
+    .skill-grid { gap: 4px !important; margin-top: 4px !important; }
+    .skill-item { padding: 3px 7px !important; font-size: 10px !important; border: 0.5px solid #ccc !important; }
+
+    /* Photo box */
+    .photo-box {
+      width: 80px !important; height: 100px !important;
+      border: 1px dashed #aaa !important;
+    }
+
+    /* Terms box */
+    .terms-box { padding: 8px 10px !important; margin-top: 6px !important; }
+    .terms-box p { font-size: 10px !important; line-height: 1.5 !important; }
   }
 
   @media (max-width: 680px) {
