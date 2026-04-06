@@ -1322,19 +1322,65 @@ function buildDocTitle() {
   return `ใบสมัครงาน ${fullName} ${position} ${dateStr}`;
 }
 
+function showAllPagesForPrint() {
+  // บังคับแสดงทุก page ก่อนปริ้น
+  ['card1','card2','card3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.setProperty('display', 'flex', 'important');
+      el.style.setProperty('flex-direction', 'column', 'important');
+    }
+  });
+  // ซ่อน card4, card5
+  ['card4','card5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.setProperty('display', 'none', 'important');
+  });
+  // ซ่อน nav elements
+  document.querySelectorAll('.top-bar,.progress-wrap,.notice-box,.nav-wrap').forEach(el => {
+    el.style.setProperty('display', 'none', 'important');
+  });
+}
+
+function restoreAfterPrint() {
+  // คืนค่า card1-3 กลับเป็น none (ยกเว้น active)
+  ['card1','card2','card3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.classList.contains('active')) {
+      el.style.removeProperty('display');
+      el.style.removeProperty('flex-direction');
+    }
+  });
+  // คืน nav elements
+  document.querySelectorAll('.top-bar,.progress-wrap,.notice-box,.nav-wrap').forEach(el => {
+    el.style.removeProperty('display');
+  });
+  // คืน card5
+  const c5 = document.getElementById('card5');
+  if (c5 && c5.classList.contains('active')) {
+    c5.style.setProperty('display', 'flex', 'important');
+  }
+}
+
 function printForm() {
   const prevTitle = document.title;
   document.title = buildDocTitle();
-  window.print();
-  setTimeout(() => { document.title = prevTitle; }, 1000);
+  showAllPagesForPrint();
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => {
+      restoreAfterPrint();
+      document.title = prevTitle;
+    }, 500);
+  }, 100);
 }
 
 function savePDF() {
-  const prevTitle = document.title;
-  document.title = buildDocTitle();
-  window.print();
-  setTimeout(() => { document.title = prevTitle; }, 1000);
+  printForm();
 }
+
+// รองรับ afterprint event ด้วย
+window.addEventListener('afterprint', restoreAfterPrint);
 
 
 // ---- EmailJS Config ----
