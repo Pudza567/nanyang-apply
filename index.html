@@ -688,6 +688,26 @@
         <label>ส่วนสูง (ซม.)</label>
         <input type="number" id="height" placeholder="ซม.">
       </div>
+      <div class="form-group">
+        <label>กรุ๊ปเลือด</label>
+        <select id="blood_group">
+          <option value="">เลือก...</option>
+          <option>A</option><option>B</option><option>O</option><option>AB</option>
+          <option>ไม่ทราบ</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ศาสนา</label>
+        <select id="religion">
+          <option value="">เลือก...</option>
+          <option>พุทธ</option><option>คริสต์</option><option>อิสลาม</option>
+          <option>ฮินดู</option><option>อื่นๆ</option><option>ไม่ระบุ</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Size รองเท้า (EU)</label>
+        <input type="text" id="shoe_size" placeholder="เช่น 42">
+      </div>
     </div>
 
     <div class="section-divider">📍 ที่อยู่และการติดต่อ</div>
@@ -859,6 +879,15 @@
       </div>
     </div>
 
+    <div class="form-group" style="margin-bottom:10px;">
+      <label>ท่านเคยทำงานในบริษัทในเครือหรือไม่</label>
+      <div class="radio-group">
+        <label class="radio-label"><input type="radio" name="in_group" value="ไม่มี"> ไม่มี</label>
+        <label class="radio-label"><input type="radio" name="in_group" value="มี"> มี โปรดระบุชื่อบริษัท:</label>
+        <input type="text" id="in_group_company" placeholder="ชื่อบริษัทในเครือ" style="flex:1;max-width:280px;display:inline;">
+      </div>
+    </div>
+
     <div class="form-group">
       <label>โปรดระบุรายละเอียดเพิ่มเติมเกี่ยวกับตัวท่านและผลงานดีเด่นที่ผ่านมา</label>
       <textarea id="self_desc" placeholder="เช่น ความสำเร็จ ทักษะพิเศษ ผลงานโดดเด่น..." style="min-height:60px;"></textarea>
@@ -894,10 +923,58 @@
           </tr>
         </thead>
         <tbody id="eduBody">
-          <tr><td><select id="edu_level_1"><option value="">เลือก...</option><option>ประถมศึกษา</option><option>มัธยมศึกษา</option><option>อาชีวะศึกษา</option><option>อุดมศึกษา</option><option>อื่นๆ</option></select></td><td><input type="text" id="edu_school_1" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_1" placeholder="GPA"></td><td><input type="text" id="edu_major_1" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_1" placeholder="ปี"></td></tr>
-          <tr><td><select id="edu_level_2"><option value="">เลือก...</option><option>ประถมศึกษา</option><option>มัธยมศึกษา</option><option>อาชีวะศึกษา</option><option>อุดมศึกษา</option><option>อื่นๆ</option></select></td><td><input type="text" id="edu_school_2" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_2" placeholder="GPA"></td><td><input type="text" id="edu_major_2" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_2" placeholder="ปี"></td></tr>
-          <tr><td><select id="edu_level_3"><option value="">เลือก...</option><option>ประถมศึกษา</option><option>มัธยมศึกษา</option><option>อาชีวะศึกษา</option><option>อุดมศึกษา</option><option>อื่นๆ</option></select></td><td><input type="text" id="edu_school_3" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_3" placeholder="GPA"></td><td><input type="text" id="edu_major_3" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_3" placeholder="ปี"></td></tr>
-          <tr><td><select id="edu_level_4"><option value="">เลือก...</option><option>ประถมศึกษา</option><option>มัธยมศึกษา</option><option>อาชีวะศึกษา</option><option>อุดมศึกษา</option><option>อื่นๆ</option></select></td><td><input type="text" id="edu_school_4" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_4" placeholder="GPA"></td><td><input type="text" id="edu_major_4" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_4" placeholder="ปี"></td></tr>
+          <tr><td><select id="edu_level_1">
+          <option value="">เลือก...</option>
+          <option>ประถมศึกษา</option>
+          <option>มัธยมศึกษาตอนต้น (ม.3)</option>
+          <option>มัธยมศึกษาตอนปลาย (ม.6)</option>
+          <option>ปวช.</option>
+          <option>ปวส.</option>
+          <option>อนุปริญญา</option>
+          <option>ปริญญาตรี</option>
+          <option>ปริญญาโท</option>
+          <option>ปริญญาเอก</option>
+          <option>อื่นๆ</option>
+        </select></td><td><input type="text" id="edu_school_1" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_1" placeholder="GPA"></td><td><input type="text" id="edu_major_1" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_1" placeholder="ปี"></td></tr>
+          <tr><td><select id="edu_level_2">
+          <option value="">เลือก...</option>
+          <option>ประถมศึกษา</option>
+          <option>มัธยมศึกษาตอนต้น (ม.3)</option>
+          <option>มัธยมศึกษาตอนปลาย (ม.6)</option>
+          <option>ปวช.</option>
+          <option>ปวส.</option>
+          <option>อนุปริญญา</option>
+          <option>ปริญญาตรี</option>
+          <option>ปริญญาโท</option>
+          <option>ปริญญาเอก</option>
+          <option>อื่นๆ</option>
+        </select></td><td><input type="text" id="edu_school_2" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_2" placeholder="GPA"></td><td><input type="text" id="edu_major_2" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_2" placeholder="ปี"></td></tr>
+          <tr><td><select id="edu_level_3">
+          <option value="">เลือก...</option>
+          <option>ประถมศึกษา</option>
+          <option>มัธยมศึกษาตอนต้น (ม.3)</option>
+          <option>มัธยมศึกษาตอนปลาย (ม.6)</option>
+          <option>ปวช.</option>
+          <option>ปวส.</option>
+          <option>อนุปริญญา</option>
+          <option>ปริญญาตรี</option>
+          <option>ปริญญาโท</option>
+          <option>ปริญญาเอก</option>
+          <option>อื่นๆ</option>
+        </select></td><td><input type="text" id="edu_school_3" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_3" placeholder="GPA"></td><td><input type="text" id="edu_major_3" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_3" placeholder="ปี"></td></tr>
+          <tr><td><select id="edu_level_4">
+          <option value="">เลือก...</option>
+          <option>ประถมศึกษา</option>
+          <option>มัธยมศึกษาตอนต้น (ม.3)</option>
+          <option>มัธยมศึกษาตอนปลาย (ม.6)</option>
+          <option>ปวช.</option>
+          <option>ปวส.</option>
+          <option>อนุปริญญา</option>
+          <option>ปริญญาตรี</option>
+          <option>ปริญญาโท</option>
+          <option>ปริญญาเอก</option>
+          <option>อื่นๆ</option>
+        </select></td><td><input type="text" id="edu_school_4" placeholder="สถานศึกษา"></td><td><input type="text" id="edu_gpa_4" placeholder="GPA"></td><td><input type="text" id="edu_major_4" placeholder="วุฒิ/สาขา"></td><td><input type="text" id="edu_year_4" placeholder="ปี"></td></tr>
         </tbody>
       </table>
     </div>
@@ -929,13 +1006,79 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td><input type="text" id="work_co_1" placeholder="บริษัท / โทรศัพท์"></td><td><input type="text" id="work_from_1" placeholder="ปี"></td><td><input type="text" id="work_to_1" placeholder="ปี"></td><td><input type="text" id="work_pos_start_1" placeholder="ตำแหน่ง"></td><td><input type="text" id="work_pos_end_1" placeholder="ตำแหน่ง"></td><td><input type="number" id="work_salary_1" placeholder="บาท"></td><td><input type="text" id="work_reason_1" placeholder="สาเหตุ"></td></tr>
-          <tr><td><input type="text" id="work_co_2" placeholder="บริษัท / โทรศัพท์"></td><td><input type="text" id="work_from_2" placeholder="ปี"></td><td><input type="text" id="work_to_2" placeholder="ปี"></td><td><input type="text" id="work_pos_start_2" placeholder="ตำแหน่ง"></td><td><input type="text" id="work_pos_end_2" placeholder="ตำแหน่ง"></td><td><input type="number" id="work_salary_2" placeholder="บาท"></td><td><input type="text" id="work_reason_2" placeholder="สาเหตุ"></td></tr>
-          <tr><td><input type="text" id="work_co_3" placeholder="บริษัท / โทรศัพท์"></td><td><input type="text" id="work_from_3" placeholder="ปี"></td><td><input type="text" id="work_to_3" placeholder="ปี"></td><td><input type="text" id="work_pos_start_3" placeholder="ตำแหน่ง"></td><td><input type="text" id="work_pos_end_3" placeholder="ตำแหน่ง"></td><td><input type="number" id="work_salary_3" placeholder="บาท"></td><td><input type="text" id="work_reason_3" placeholder="สาเหตุ"></td></tr>
-          <tr><td><input type="text" id="work_co_4" placeholder="บริษัท / โทรศัพท์"></td><td><input type="text" id="work_from_4" placeholder="ปี"></td><td><input type="text" id="work_to_4" placeholder="ปี"></td><td><input type="text" id="work_pos_start_4" placeholder="ตำแหน่ง"></td><td><input type="text" id="work_pos_end_4" placeholder="ตำแหน่ง"></td><td><input type="number" id="work_salary_4" placeholder="บาท"></td><td><input type="text" id="work_reason_4" placeholder="สาเหตุ"></td></tr>
+          <tr class="work-main-row">
+            <td><input type="text" id="work_co_1" placeholder="บริษัท / โทรศัพท์" oninput="updateWorkLabel(1)"></td>
+            <td><input type="text" id="work_from_1" placeholder="ปี"></td>
+            <td><input type="text" id="work_to_1" placeholder="ปี"></td>
+            <td><input type="text" id="work_pos_start_1" placeholder="ตำแหน่ง"></td>
+            <td><input type="text" id="work_pos_end_1" placeholder="ตำแหน่ง"></td>
+            <td><input type="number" id="work_salary_1" placeholder="บาท"></td>
+            <td><input type="text" id="work_reason_1" placeholder="สาเหตุ"></td>
+          </tr>
+          <tr class="work-desc-row">
+            <td colspan="7" style="padding:4px 8px 10px; background:#f8fafc;">
+              <div style="display:flex; align-items:flex-start; gap:8px;">
+                <label style="font-size:11px; font-weight:700; color:var(--red); white-space:nowrap; padding-top:6px;">📝 ลักษณะงาน:</label>
+                <textarea id="work_desc_1" placeholder="อธิบายลักษณะงานและความรับผิดชอบโดยสังเขป..." style="flex:1; min-height:52px; font-size:13px; resize:vertical;"></textarea>
+              </div>
+            </td>
+          </tr>
+          <tr class="work-main-row">
+            <td><input type="text" id="work_co_2" placeholder="บริษัท / โทรศัพท์" oninput="updateWorkLabel(2)"></td>
+            <td><input type="text" id="work_from_2" placeholder="ปี"></td>
+            <td><input type="text" id="work_to_2" placeholder="ปี"></td>
+            <td><input type="text" id="work_pos_start_2" placeholder="ตำแหน่ง"></td>
+            <td><input type="text" id="work_pos_end_2" placeholder="ตำแหน่ง"></td>
+            <td><input type="number" id="work_salary_2" placeholder="บาท"></td>
+            <td><input type="text" id="work_reason_2" placeholder="สาเหตุ"></td>
+          </tr>
+          <tr class="work-desc-row">
+            <td colspan="7" style="padding:4px 8px 10px; background:#f8fafc;">
+              <div style="display:flex; align-items:flex-start; gap:8px;">
+                <label style="font-size:11px; font-weight:700; color:var(--red); white-space:nowrap; padding-top:6px;">📝 ลักษณะงาน:</label>
+                <textarea id="work_desc_2" placeholder="อธิบายลักษณะงานและความรับผิดชอบโดยสังเขป..." style="flex:1; min-height:52px; font-size:13px; resize:vertical;"></textarea>
+              </div>
+            </td>
+          </tr>
+          <tr class="work-main-row">
+            <td><input type="text" id="work_co_3" placeholder="บริษัท / โทรศัพท์" oninput="updateWorkLabel(3)"></td>
+            <td><input type="text" id="work_from_3" placeholder="ปี"></td>
+            <td><input type="text" id="work_to_3" placeholder="ปี"></td>
+            <td><input type="text" id="work_pos_start_3" placeholder="ตำแหน่ง"></td>
+            <td><input type="text" id="work_pos_end_3" placeholder="ตำแหน่ง"></td>
+            <td><input type="number" id="work_salary_3" placeholder="บาท"></td>
+            <td><input type="text" id="work_reason_3" placeholder="สาเหตุ"></td>
+          </tr>
+          <tr class="work-desc-row">
+            <td colspan="7" style="padding:4px 8px 10px; background:#f8fafc;">
+              <div style="display:flex; align-items:flex-start; gap:8px;">
+                <label style="font-size:11px; font-weight:700; color:var(--red); white-space:nowrap; padding-top:6px;">📝 ลักษณะงาน:</label>
+                <textarea id="work_desc_3" placeholder="อธิบายลักษณะงานและความรับผิดชอบโดยสังเขป..." style="flex:1; min-height:52px; font-size:13px; resize:vertical;"></textarea>
+              </div>
+            </td>
+          </tr>
+          <tr class="work-main-row">
+            <td><input type="text" id="work_co_4" placeholder="บริษัท / โทรศัพท์" oninput="updateWorkLabel(4)"></td>
+            <td><input type="text" id="work_from_4" placeholder="ปี"></td>
+            <td><input type="text" id="work_to_4" placeholder="ปี"></td>
+            <td><input type="text" id="work_pos_start_4" placeholder="ตำแหน่ง"></td>
+            <td><input type="text" id="work_pos_end_4" placeholder="ตำแหน่ง"></td>
+            <td><input type="number" id="work_salary_4" placeholder="บาท"></td>
+            <td><input type="text" id="work_reason_4" placeholder="สาเหตุ"></td>
+          </tr>
+          <tr class="work-desc-row">
+            <td colspan="7" style="padding:4px 8px 10px; background:#f8fafc;">
+              <div style="display:flex; align-items:flex-start; gap:8px;">
+                <label style="font-size:11px; font-weight:700; color:var(--red); white-space:nowrap; padding-top:6px;">📝 ลักษณะงาน:</label>
+                <textarea id="work_desc_4" placeholder="อธิบายลักษณะงานและความรับผิดชอบโดยสังเขป..." style="flex:1; min-height:52px; font-size:13px; resize:vertical;"></textarea>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
+
+
 
     <div class="form-grid" style="margin-top:12px;">
       <div class="form-group">
@@ -947,11 +1090,15 @@
       </div>
       <div class="form-group">
         <label>ยินยอมให้บริษัทตรวจสอบประวัติการทำงาน</label>
-        <div class="radio-group">
+        <div class="radio-group" style="flex-wrap:wrap;">
           <label class="radio-label"><input type="radio" name="ref_check" value="ไม่สะดวก"> ไม่สะดวก เพราะ</label>
-          <input type="text" id="ref_reason" placeholder="ระบุ" style="flex:1;max-width:150px;">
-          <label class="radio-label"><input type="radio" name="ref_check" value="สะดวก"> สะดวก ติดต่อ</label>
-          <input type="text" id="ref_contact" placeholder="ชื่อ/โทร" style="flex:1;max-width:150px;">
+          <input type="text" id="ref_reason" placeholder="ระบุเหตุผล" style="max-width:140px;">
+          <label class="radio-label"><input type="radio" name="ref_check" value="สะดวก"> สะดวก ติดต่อคุณ</label>
+          <input type="text" id="ref_contact" placeholder="ชื่อ" style="max-width:120px;">
+          <span style="font-size:13px;">ตำแหน่ง</span>
+          <input type="text" id="ref_contact_pos" placeholder="ตำแหน่ง" style="max-width:120px;">
+          <span style="font-size:13px;">โทร</span>
+          <input type="tel" id="ref_contact_tel" placeholder="เบอร์โทร" style="max-width:120px;">
         </div>
       </div>
     </div>
@@ -1012,34 +1159,46 @@
     <div class="form-grid" style="margin-bottom:12px;">
       <div class="form-group">
         <label>ขับรถยนต์</label>
-        <div class="radio-group">
-          <label class="radio-label"><input type="radio" name="drive_car" value="ได้"> ได้</label>
-          <label class="radio-label"><input type="radio" name="drive_car" value="ไม่ได้"> ไม่ได้</label>
-          <label class="radio-label"><input type="radio" name="drive_car" value="มีรถ"> มีรถส่วนตัว</label>
+        <div class="check-group">
+          <label class="check-label"><input type="checkbox" id="drive_car_can"> ขับได้</label>
+          <label class="check-label"><input type="checkbox" id="drive_car_own"> มีรถส่วนตัว</label>
         </div>
       </div>
       <div class="form-group">
         <label>ใบอนุญาตขับขี่รถยนต์</label>
-        <div class="radio-group">
+        <div class="radio-group" style="flex-wrap:wrap; gap:6px 12px;">
           <label class="radio-label"><input type="radio" name="car_license" value="ไม่มี"> ไม่มี</label>
-          <label class="radio-label"><input type="radio" name="car_license" value="มี"> มี เลขที่</label>
-          <input type="text" id="car_license_no" placeholder="เลขที่" style="max-width:140px;">
+          <label class="radio-label"><input type="radio" name="car_license" value="ชั่วคราว"> ชั่วคราว</label>
+          <label class="radio-label"><input type="radio" name="car_license" value="บ.1 (ส่วนบุคคล)"> บ.1 ส่วนบุคคล</label>
+          <label class="radio-label"><input type="radio" name="car_license" value="บ.2 (รถบรรทุก6ล้อ)"> บ.2 รถบรรทุก 6 ล้อ</label>
+          <label class="radio-label"><input type="radio" name="car_license" value="บ.3 (รถพ่วง)"> บ.3 รถพ่วง</label>
+          <label class="radio-label"><input type="radio" name="car_license" value="ท.1 (สาธารณะ)"> ท.1 สาธารณะ</label>
+          <label class="radio-label"><input type="radio" name="car_license" value="ท.2 (บรรทุกสาธารณะ)"> ท.2 บรรทุกสาธารณะ</label>
+          <label class="radio-label"><input type="radio" name="car_license" value="ท.3 (รถพ่วงสาธารณะ)"> ท.3 รถพ่วงสาธารณะ</label>
+        </div>
+        <div style="margin-top:6px; display:flex; align-items:center; gap:8px;">
+          <label style="font-size:12px; color:var(--navy); white-space:nowrap;">เลขที่ใบขับขี่:</label>
+          <input type="text" id="car_license_no" placeholder="เลขที่ใบขับขี่" style="max-width:200px;">
         </div>
       </div>
       <div class="form-group">
         <label>ขับรถจักรยานยนต์</label>
-        <div class="radio-group">
-          <label class="radio-label"><input type="radio" name="drive_moto" value="ได้"> ได้</label>
-          <label class="radio-label"><input type="radio" name="drive_moto" value="ไม่ได้"> ไม่ได้</label>
-          <label class="radio-label"><input type="radio" name="drive_moto" value="มีรถ"> มีรถส่วนตัว</label>
+        <div class="check-group">
+          <label class="check-label"><input type="checkbox" id="drive_moto_can"> ขับได้</label>
+          <label class="check-label"><input type="checkbox" id="drive_moto_own"> มีรถส่วนตัว</label>
         </div>
       </div>
       <div class="form-group">
         <label>ใบอนุญาตขับขี่รถจักรยานยนต์</label>
-        <div class="radio-group">
+        <div class="radio-group" style="flex-wrap:wrap; gap:6px 12px;">
           <label class="radio-label"><input type="radio" name="moto_license" value="ไม่มี"> ไม่มี</label>
-          <label class="radio-label"><input type="radio" name="moto_license" value="มี"> มี เลขที่</label>
-          <input type="text" id="moto_license_no" placeholder="เลขที่" style="max-width:140px;">
+          <label class="radio-label"><input type="radio" name="moto_license" value="ชั่วคราว"> ชั่วคราว</label>
+          <label class="radio-label"><input type="radio" name="moto_license" value="ส่วนบุคคล (5ปี)"> ส่วนบุคคล (5 ปี)</label>
+          <label class="radio-label"><input type="radio" name="moto_license" value="สาธารณะ"> สาธารณะ</label>
+        </div>
+        <div style="margin-top:6px; display:flex; align-items:center; gap:8px;">
+          <label style="font-size:12px; color:var(--navy); white-space:nowrap;">เลขที่ใบขับขี่:</label>
+          <input type="text" id="moto_license_no" placeholder="เลขที่ใบขับขี่" style="max-width:200px;">
         </div>
       </div>
     </div>
@@ -1047,48 +1206,68 @@
     <div class="section-divider">ℹ️ ข้อมูลอื่นๆ</div>
     <div class="form-grid" style="margin-bottom:12px;">
       <div class="form-group">
-        <label>โรคประจำตัว</label>
+        <label>1. ท่านมีโรคประจำตัวหรือไม่</label>
         <div class="radio-group">
           <label class="radio-label"><input type="radio" name="chronic" value="ไม่มี"> ไม่มี</label>
-          <label class="radio-label"><input type="radio" name="chronic" value="มี"> มี</label>
+          <label class="radio-label"><input type="radio" name="chronic" value="มี"> มี โปรดระบุ</label>
           <input type="text" id="chronic_detail" placeholder="ระบุ..." style="flex:1;">
         </div>
       </div>
       <div class="form-group">
-        <label>อยู่ระหว่างการตั้งครรภ์</label>
+        <label>2. ท่านอยู่ระหว่างการตั้งครรภ์หรือไม่</label>
         <div class="radio-group">
           <label class="radio-label"><input type="radio" name="pregnant" value="ไม่มี"> ไม่มี</label>
-          <label class="radio-label"><input type="radio" name="pregnant" value="มี"> มี</label>
+          <label class="radio-label"><input type="radio" name="pregnant" value="มี"> มี โปรดระบุ</label>
           <input type="text" id="pregnant_detail" placeholder="เดือนที่..." style="max-width:100px;">
         </div>
       </div>
       <div class="form-group">
-        <label>เคยประสบอุบัติเหตุร้ายแรง</label>
+        <label>3. ท่านเคยประสบอุบัติเหตุร้ายแรงหรือไม่</label>
         <div class="radio-group">
           <label class="radio-label"><input type="radio" name="accident" value="ไม่เคย"> ไม่เคย</label>
-          <label class="radio-label"><input type="radio" name="accident" value="เคย"> เคย</label>
+          <label class="radio-label"><input type="radio" name="accident" value="เคย"> เคย โปรดระบุ</label>
           <input type="text" id="accident_detail" placeholder="ระบุ..." style="flex:1;">
         </div>
       </div>
       <div class="form-group">
-        <label>เคยได้รับโทษคดีอาญา</label>
+        <label>4. ท่านเคยได้รับโทษคดีอาญาหรือไม่</label>
         <div class="radio-group">
           <label class="radio-label"><input type="radio" name="crime" value="ไม่เคย"> ไม่เคย</label>
-          <label class="radio-label"><input type="radio" name="crime" value="เคย"> เคย</label>
+          <label class="radio-label"><input type="radio" name="crime" value="เคย"> เคย โปรดระบุ</label>
           <input type="text" id="crime_detail" placeholder="ระบุ..." style="flex:1;">
         </div>
       </div>
       <div class="form-group">
-        <label>เคยเสพยาเสพติด</label>
+        <label>5. ท่านเคยเสพยาเสพติดหรือไม่</label>
         <div class="radio-group">
           <label class="radio-label"><input type="radio" name="drug" value="ไม่เคย"> ไม่เคย</label>
-          <label class="radio-label"><input type="radio" name="drug" value="เคย"> เคย</label>
+          <label class="radio-label"><input type="radio" name="drug" value="เคย"> เคย โปรดระบุ</label>
           <input type="text" id="drug_detail" placeholder="ระบุ..." style="flex:1;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>6. ท่านเคยเสพยาเสพติดหรือสารเสพติดอื่นๆหรือไม่</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="substance" value="ไม่เคย"> ไม่เคย</label>
+          <label class="radio-label"><input type="radio" name="substance" value="เคย"> เคย โปรดระบุ</label>
+          <input type="text" id="substance_detail" placeholder="ระบุ..." style="flex:1;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>7. ท่านมีอาการผิดปกติทางร่างกายที่เป็นอุปสรรคต่อการปฏิบัติงานหรือไม่</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="disability" value="ไม่มี"> ไม่มี</label>
+          <label class="radio-label"><input type="radio" name="disability" value="มี"> มี โปรดระบุ</label>
+          <input type="text" id="disability_detail" placeholder="ระบุ..." style="flex:1;">
         </div>
       </div>
       <div class="form-group">
         <label>งานอดิเรก / กีฬา / กิจกรรม</label>
         <input type="text" id="hobby" placeholder="เช่น อ่านหนังสือ, วิ่ง...">
+      </div>
+      <div class="form-group span-2">
+        <label>ความสามารถพิเศษ</label>
+        <textarea id="special_skills" style="min-height:55px;" placeholder="เช่น พูดภาษาจีนได้, เล่นดนตรี, วาดรูป, โปรแกรมคอมพิวเตอร์พิเศษ..."></textarea>
       </div>
     </div>
 
@@ -1362,7 +1541,14 @@ function collectData() {
     lang1: v('lang1'), lang1_speak: v('lang1_speak'), lang1_read: v('lang1_read'),
     lang2: v('lang2'), lang2_speak: v('lang2_speak'),
     skills: skills.join(', '), type_th: v('type_th'), type_en: v('type_en'),
-    hobby: v('hobby'),
+    hobby: v('hobby'), special_skills: v('special_skills'),
+    blood_group: v('blood_group'), religion: v('religion'), shoe_size: v('shoe_size'),
+    in_group_company: v('in_group_company'),
+    drive_car: (document.getElementById('drive_car_can')?.checked ? 'ขับได้' : '') + (document.getElementById('drive_car_own')?.checked ? ' มีรถส่วนตัว' : ''),
+    drive_moto: (document.getElementById('drive_moto_can')?.checked ? 'ขับได้' : '') + (document.getElementById('drive_moto_own')?.checked ? ' มีรถส่วนตัว' : ''),
+    work_desc_1: v('work_desc_1'), work_desc_2: v('work_desc_2'),
+    work_desc_3: v('work_desc_3'), work_desc_4: v('work_desc_4'),
+    ref_contact_pos: v('ref_contact_pos'), ref_contact_tel: v('ref_contact_tel'),
     ref1_name: v('ref1_name'), ref1_tel: v('ref1_tel'),
     ref2_name: v('ref2_name'), ref2_tel: v('ref2_tel'),
     emr1_name: v('emr1_name'), emr1_tel: v('emr1_tel'),
@@ -1570,6 +1756,11 @@ ${d.self_desc}
     error.style.display = 'block';
     btns.style.display = 'flex';
   }
+}
+
+
+function updateWorkLabel(i) {
+  // no label needed anymore - inline
 }
 
 showPage(1);

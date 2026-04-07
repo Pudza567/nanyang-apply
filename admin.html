@@ -506,15 +506,35 @@ async function loadData() {
   document.getElementById('emptyMsg').style.display = 'none';
 
   try {
-    const res = await fetch(SCRIPT_URL + '?action=getAll');
-    const json = await res.json();
-    allData = json.data || [];
+    // ใช้ JSONP เพื่อหลีกเลี่ยง CORS
+    const data = await fetchWithJSONP(SCRIPT_URL + '?action=getAll&callback=handleData');
+    allData = data.data || [];
     renderTable(allData);
     updateStats(allData);
     populateFilter(allData);
   } catch(e) {
+    console.error('Load error:', e);
     document.getElementById('loadingMsg').innerHTML = '❌ โหลดข้อมูลไม่สำเร็จ กรุณารีเฟรช';
   }
+}
+
+function fetchWithJSONP(url) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'jsonpCallback_' + Date.now();
+    window[callbackName] = function(data) {
+      delete window[callbackName];
+      document.head.removeChild(script);
+      resolve(data);
+    };
+    const script = document.createElement('script');
+    script.src = url.replace('callback=handleData', 'callback=' + callbackName);
+    script.onerror = () => {
+      delete window[callbackName];
+      document.head.removeChild(script);
+      reject(new Error('JSONP failed'));
+    };
+    document.head.appendChild(script);
+  });
 }
 
 function updateStats(data) {
