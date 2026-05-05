@@ -1341,24 +1341,23 @@
         ข้อมูลของท่านถูกบันทึกเรียบร้อยแล้ว<br>
         ทีม HR จะติดต่อกลับท่านโดยเร็วที่สุด
       </p>
-      <div id="emailSending" style="display:none; padding:20px; text-align:center;">
-        <div style="font-size:32px; margin-bottom:8px;">⏳</div>
-        <p style="color:var(--navy); font-weight:600;">กำลังส่ง Email ให้ HR...</p>
+      <!-- Status การส่งข้อมูลอัตโนมัติ -->
+      <div id="sheetsAutoMsg" style="display:none; font-size:15px; font-weight:700; padding:12px 20px; background:#f0fdf4; border-radius:10px; border:1.5px solid #86efac; margin-bottom:16px;"></div>
+
+      <!-- Email status (ถ้าตั้งค่า EmailJS) -->
+      <div id="emailDone" style="display:none; padding:12px 16px; background:#eff6ff; border-radius:10px; border:1.5px solid #bfdbfe; margin-bottom:12px;">
+        <p style="color:#1e40af; font-weight:700; font-size:14px;">📧 แจ้งเตือน Email ถึง HR เรียบร้อยแล้ว</p>
       </div>
-      <div id="emailDone" style="display:none; padding:16px; background:#f0fdf4; border-radius:10px; border:1.5px solid #86efac; margin-top:8px;">
-        <p style="color:#166534; font-weight:700; font-size:15px;">✅ ส่ง Email ให้ HR เรียบร้อยแล้ว!</p>
-        <p style="color:#166534; font-size:13px; margin-top:4px;">HR จะได้รับข้อมูลใบสมัครของท่านทาง patinya.ar@nanyang.co.th</p>
+      <div id="emailError" style="display:none; padding:12px 16px; background:#fef2f2; border-radius:10px; border:1.5px solid #fca5a5; margin-bottom:12px;">
+        <p style="color:#991b1b; font-size:13px;">⚠️ แจ้งเตือน Email ไม่สำเร็จ (ข้อมูลถูกบันทึกแล้ว)</p>
       </div>
-      <div id="emailError" style="display:none; padding:16px; background:#fef2f2; border-radius:10px; border:1.5px solid #fca5a5; margin-top:8px;">
-        <p style="color:#991b1b; font-weight:700; font-size:15px;">❌ ส่ง Email ไม่สำเร็จ</p>
-        <p style="color:#991b1b; font-size:13px;">กรุณาบันทึก PDF แล้วส่งมาที่ patinya.ar@nanyang.co.th แทนครับ</p>
-      </div>
+
       <div class="action-buttons" id="actionBtns">
         <button class="btn btn-print" onclick="printForm()">🖨️ พิมพ์ใบสมัคร</button>
         <button class="btn btn-pdf" onclick="savePDF()">📄 บันทึก PDF</button>
-        <button class="btn btn-sheets" id="btnSheets" onclick="sendToSheets()">📊 ส่งเข้า Google Sheets</button>
       </div>
-      <div id="sheetsMsg" style="margin-top:14px;font-size:14px;display:none;"></div>
+      <div id="sheetsMsg" style="display:none;"></div>
+      <div id="emailSending" style="display:none;"></div>
     </div>
   </div>
 </div>
@@ -1497,15 +1496,47 @@ function buildReview() {
   `;
 }
 
-function submitForm() {
+async function submitForm() {
   if (!document.getElementById('agree_terms').checked) {
     alert('กรุณาติ๊กยืนยันว่าข้อมูลเป็นความจริงก่อนส่ง');
     return;
   }
+
+  // แสดง loading ก่อนเปลี่ยนหน้า
+  const btn = document.getElementById('btnNext');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ กำลังส่ง...'; }
+
+  // ส่งเข้า Google Sheets อัตโนมัติ
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydgPbhHOjF6_bdeyWQy9lNj0Gvt8nA5Wyoa9K6dg9CL0Xdkj65Lj0CpCbeq6inUbe8nw/exec';
+  let sheetsSuccess = false;
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(collectData()),
+    });
+    sheetsSuccess = true;
+  } catch(err) {
+    console.error('Sheets error:', err);
+  }
+
+  // เปลี่ยนหน้า success
   currentPage = 5;
   showPage(5);
   window.scrollTo({top: 0, behavior: 'smooth'});
-  // Auto send email
+
+  // แสดงผลลัพธ์
+  const sheetsMsgEl = document.getElementById('sheetsAutoMsg');
+  if (sheetsMsgEl) {
+    sheetsMsgEl.style.display = 'block';
+    sheetsMsgEl.innerHTML = sheetsSuccess
+      ? '✅ ส่งข้อมูลเข้าระบบ HR เรียบร้อยแล้ว!'
+      : '⚠️ ส่งไม่สำเร็จ กรุณาติดต่อ HR โดยตรง';
+    sheetsMsgEl.style.color = sheetsSuccess ? '#10b981' : '#f59e0b';
+  }
+
+  // Auto send email ถ้าตั้งค่าไว้
   setTimeout(() => sendEmailToHR(), 500);
 }
 
