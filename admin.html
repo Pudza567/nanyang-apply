@@ -337,11 +337,52 @@ const LEGACY_ORDER = [
   'self_desc',
 ];
 
+/* Map legacy Thai header labels (used by the Sheet before the schema
+   migration) to the English keys the admin renders with. Old submissions
+   live under Thai-named columns; new submissions live under English ones.
+   We mirror Thai values onto their English aliases only when the English
+   slot is empty, so new rows take priority. */
+const THAI_TO_EN = {
+  'วันที่ส่ง':'timestamp',
+  'ตำแหน่ง 1':'pos1', 'ตำแหน่ง 2':'pos2', 'เงินเดือนที่หวัง':'salary_expect',
+  'ชื่อ':'fname', 'นามสกุล':'lname', 'ชื่อเล่น':'nickname',
+  'วันเกิด':'birthdate', 'อายุ':'age',
+  'มือถือ':'phone_mobile', 'Email':'email', 'Line ID':'line_id',
+  'ที่อยู่':'addr_no', 'ตำบล':'addr_sub', 'อำเภอ':'addr_dist',
+  'จังหวัด':'addr_prov', 'รหัสไปรษณีย์':'addr_zip',
+  'เลขบัตรฯ':'id_card', 'สถานะทหาร':'military', 'สถานภาพ':'marital',
+  'ชื่อบิดา':'father_name', 'ชื่อมารดา':'mother_name', 'จำนวนบุตร':'children',
+  'น้ำหนัก':'weight', 'ส่วนสูง':'height',
+  'การศึกษา 1':'edu_level_1', 'สถานศึกษา 1':'edu_school_1', 'สาขา 1':'edu_major_1',
+  'การศึกษา 2':'edu_level_2', 'สถานศึกษา 2':'edu_school_2', 'สาขา 2':'edu_major_2',
+  'การศึกษา 3':'edu_level_3', 'สถานศึกษา 3':'edu_school_3', 'สาขา 3':'edu_major_3',
+  'การศึกษา 4':'edu_level_4', 'สถานศึกษา 4':'edu_school_4', 'สาขา 4':'edu_major_4',
+  'บริษัท 1':'work_co_1', 'ตำแหน่งสุดท้าย 1':'work_pos_end_1',
+  'เงินเดือน 1':'work_salary_1', 'สาเหตุ 1':'work_reason_1',
+  'บริษัท 2':'work_co_2', 'ตำแหน่งสุดท้าย 2':'work_pos_end_2', 'เงินเดือน 2':'work_salary_2',
+  'บริษัท 3':'work_co_3', 'ตำแหน่งสุดท้าย 3':'work_pos_end_3', 'เงินเดือน 3':'work_salary_3',
+  'เริ่มงานได้ (วัน)':'start_days',
+  'ภาษา 1':'lang1', 'พูด 1':'lang1_speak', 'อ่าน 1':'lang1_read',
+  'ภาษา 2':'lang2', 'พูด 2':'lang2_speak',
+  'ทักษะคอมพิวเตอร์':'skills', 'พิมพ์ดีดไทย':'type_th', 'พิมพ์ดีดอังกฤษ':'type_en',
+  'งานอดิเรก':'hobby',
+  'อ้างอิง 1':'ref1_name', 'โทร 1':'ref1_tel',
+  'อ้างอิง 2':'ref2_name', 'โทร 2':'ref2_tel',
+  'ฉุกเฉิน 1':'emr1_name', 'โทรฉุกเฉิน 1':'emr1_tel',
+  'รายละเอียดเพิ่มเติม':'self_desc',
+};
+function isEmpty(v){ return v == null || v === '' || v === '-'; }
+
 function rowToObject(row, headers) {
   if (Array.isArray(row)) {
     const keys = headers && headers.length ? headers : LEGACY_ORDER;
     const obj = {};
     keys.forEach((k, i) => { obj[k] = row[i]; });
+    // Fill English aliases from Thai columns when English slot is empty.
+    for (const thai in THAI_TO_EN) {
+      const en = THAI_TO_EN[thai];
+      if (isEmpty(obj[en]) && !isEmpty(obj[thai])) obj[en] = obj[thai];
+    }
     return obj;
   }
   // Already an object
