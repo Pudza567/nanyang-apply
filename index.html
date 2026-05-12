@@ -1374,16 +1374,36 @@ let currentPage = 1;
 const totalPages = 4;
 
 function previewPhoto(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      document.getElementById('photoPreview').src = e.target.result;
-      document.getElementById('photoPreview').style.display = 'block';
-      document.getElementById('photoIcon').style.display = 'none';
-      document.getElementById('photoText').style.display = 'none';
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  // Resize to max 400x533 (2-inch photo aspect 3:4) at JPEG 0.7 quality
+  // to stay well under the 50,000-char Sheets cell limit.
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 400, maxH = 533;
+      let { width, height } = img;
+      const r = Math.min(maxW / width, maxH / height, 1);
+      width  = Math.round(width  * r);
+      height = Math.round(height * r);
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      const dataUri = canvas.toDataURL('image/jpeg', 0.7);
+      window._photoDataUri = dataUri;
+      const prev = document.getElementById('photoPreview');
+      prev.src = dataUri;
+      prev.style.display = 'block';
+      const icon = document.getElementById('photoIcon');
+      const text = document.getElementById('photoText');
+      if (icon) icon.style.display = 'none';
+      if (text) text.style.display = 'none';
     };
-    reader.readAsDataURL(input.files[0]);
-  }
+    img.onerror = () => alert('โหลดรูปไม่สำเร็จ กรุณาเลือกไฟล์ใหม่');
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 function showPage(page) {
@@ -1689,6 +1709,7 @@ function collectData() {
     emr1_rel:  v('emr1_rel'),  emr1_tel:  v('emr1_tel'),
     emr2_name: v('emr2_name'), emr2_addr: v('emr2_addr'),
     emr2_rel:  v('emr2_rel'),  emr2_tel:  v('emr2_tel'),
+      photo: window._photoDataUri || '',
   };
 }
 
