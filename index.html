@@ -1527,7 +1527,7 @@ async function submitForm() {
   if (btn) { btn.disabled = true; btn.textContent = '⏳ กำลังส่ง...'; }
 
   // ส่งเข้า Google Sheets อัตโนมัติ
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydgPbhHOjF6_bdeyWQy9lNj0Gvt8nA5Wyoa9K6dg9CL0Xdkj65Lj0CpCbeq6inUbe8nw/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwsRCTwu8iXbzKJlAe4loVZyQlb9X-851hSpSE1EIHBdaaRlS_n53SZCBRiaB5Y_RSZBA/exec';
   let sheetsSuccess = false;
   try {
     await fetch(SCRIPT_URL, {
@@ -1716,7 +1716,7 @@ function collectData() {
 async function sendToSheets() {
   const btn = document.getElementById('btnSheets');
   const msg = document.getElementById('sheetsMsg');
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydgPbhHOjF6_bdeyWQy9lNj0Gvt8nA5Wyoa9K6dg9CL0Xdkj65Lj0CpCbeq6inUbe8nw/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwsRCTwu8iXbzKJlAe4loVZyQlb9X-851hSpSE1EIHBdaaRlS_n53SZCBRiaB5Y_RSZBA/exec';
   if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
     msg.style.display = 'block';
     msg.style.color = '#d97706';
