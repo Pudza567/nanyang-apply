@@ -1541,49 +1541,154 @@ async function submitForm() {
 }
 
 function collectData() {
-  const skills = [];
-  ['windows','word','excel','access','ppt','illustrator','photoshop'].forEach(s => {
-    if (document.getElementById('sk_'+s)?.checked) skills.push(s);
-  });
+  // ---- skill checkboxes ----
+  const SKILL_KEYS = ['windows','word','excel','access','ppt','illustrator','photoshop'];
+  const skills = SKILL_KEYS.filter(s => document.getElementById('sk_'+s)?.checked);
+
+  // ---- driving (checkbox combos) ----
+  const driveCar = [
+    document.getElementById('drive_car_can')?.checked ? 'ขับได้' : '',
+    document.getElementById('drive_car_own')?.checked ? 'มีรถส่วนตัว' : ''
+  ].filter(Boolean).join(' / ');
+  const driveMoto = [
+    document.getElementById('drive_moto_can')?.checked ? 'ขับได้' : '',
+    document.getElementById('drive_moto_own')?.checked ? 'มีรถส่วนตัว' : ''
+  ].filter(Boolean).join(' / ');
+
+  // ---- health items: combine radio answer + free-text detail ----
+  // returns '' | 'ไม่มี/ไม่เคย' | 'มี/เคย — <detail>'
+  function hv(radioName, detailId) {
+    const ans = radVal(radioName);
+    const det = v(detailId);
+    if (!ans || ans === '-') return val(det);
+    if (det && det !== '-') return ans + ' — ' + det;
+    return ans;
+  }
+  function val(x){ return (x && x !== '-') ? x : ''; }
+
   return {
     timestamp: new Date().toLocaleString('th-TH'),
+
+    // ----- ตำแหน่งที่สมัคร -----
     pos1: v('pos1'), pos2: v('pos2'), salary_expect: v('salary_expect'),
+
+    // ----- ข้อมูลส่วนบุคคล -----
     fname: v('fname'), lname: v('lname'), nickname: v('nickname'),
     fname_en: v('fname_en'), lname_en: v('lname_en'),
-    birthdate: v('birthdate'), age: v('age'), id_card: v('id_card'),
+    birthdate: v('birthdate'), age: v('age'),
+    weight: v('weight'), height: v('height'),
+    blood_group: v('blood_group'), religion: v('religion'),
+    shoe_size: v('shoe_size'), hospital: v('hospital'),
+
+    // ----- ที่อยู่และติดต่อ -----
+    addr_no: v('addr_no'), addr_moo: v('addr_moo'), addr_road: v('addr_road'),
+    addr_sub: v('addr_sub'), addr_dist: v('addr_dist'),
+    addr_prov: v('addr_prov'), addr_zip: v('addr_zip'),
     phone_home: v('phone_home'), phone_mobile: v('phone_mobile'),
     email: v('email'), line_id: v('line_id'),
-    addr_no: v('addr_no'), addr_moo: v('addr_moo'), addr_road: v('addr_road'),
-    addr_sub: v('addr_sub'), addr_dist: v('addr_dist'), addr_prov: v('addr_prov'), addr_zip: v('addr_zip'),
-    military: radVal('military'), marital: radVal('marital'),
-    father_name: v('father_name'), mother_name: v('mother_name'),
-    spouse_name: v('spouse_name'), children: v('children'),
-    weight: v('weight'), height: v('height'),
-    edu_level_1: v('edu_level_1'), edu_school_1: v('edu_school_1'), edu_major_1: v('edu_major_1'), edu_year_1: v('edu_year_1'),
-    edu_level_2: v('edu_level_2'), edu_school_2: v('edu_school_2'), edu_major_2: v('edu_major_2'), edu_year_2: v('edu_year_2'),
-    edu_level_3: v('edu_level_3'), edu_school_3: v('edu_school_3'), edu_major_3: v('edu_major_3'), edu_year_3: v('edu_year_3'),
-    edu_level_4: v('edu_level_4'), edu_school_4: v('edu_school_4'), edu_major_4: v('edu_major_4'), edu_year_4: v('edu_year_4'),
-    internship: v('internship'), training: v('training'),
-    work_co_1: v('work_co_1'), work_from_1: v('work_from_1'), work_to_1: v('work_to_1'),
-    work_pos_start_1: v('work_pos_start_1'), work_pos_end_1: v('work_pos_end_1'), work_salary_1: v('work_salary_1'), work_reason_1: v('work_reason_1'),
-    work_co_2: v('work_co_2'), work_pos_end_2: v('work_pos_end_2'), work_salary_2: v('work_salary_2'),
-    work_co_3: v('work_co_3'), work_pos_end_3: v('work_pos_end_3'), work_salary_3: v('work_salary_3'),
-    start_days: v('start_days'),
-    lang1: v('lang1'), lang1_speak: v('lang1_speak'), lang1_read: v('lang1_read'),
-    lang2: v('lang2'), lang2_speak: v('lang2_speak'),
-    skills: skills.join(', '), type_th: v('type_th'), type_en: v('type_en'),
-    hobby: v('hobby'), special_skills: v('special_skills'),
-    blood_group: v('blood_group'), religion: v('religion'), shoe_size: v('shoe_size'),
+
+    // ----- บัตร ปชช + ทหาร + สถานภาพ -----
+    id_card: v('id_card'), id_issue: v('id_issue'), id_exp: v('id_exp'),
+    military: radVal('military'),
+    marital:  radVal('marital'),
+
+    // ----- ครอบครัว -----
+    siblings_total: v('siblings_total'), siblings_m: v('siblings_m'), siblings_f: v('siblings_f'),
+    father_name: v('father_name'), father_job: v('father_job'),
+    mother_name: v('mother_name'), mother_job: v('mother_job'),
+    spouse_name: v('spouse_name'), spouse_job: v('spouse_job'),
+    children: v('children'),
+
+    // ----- ความเกี่ยวข้องกับบริษัท -----
+    prev_emp_year:  v('prev_emp_year'),
+    prev_emp_year2: v('prev_emp_year2'),
+    relative_name:  v('relative_name'),
     in_group_company: v('in_group_company'),
-    drive_car: (document.getElementById('drive_car_can')?.checked ? 'ขับได้' : '') + (document.getElementById('drive_car_own')?.checked ? ' มีรถส่วนตัว' : ''),
-    drive_moto: (document.getElementById('drive_moto_can')?.checked ? 'ขับได้' : '') + (document.getElementById('drive_moto_own')?.checked ? ' มีรถส่วนตัว' : ''),
-    work_desc_1: v('work_desc_1'), work_desc_2: v('work_desc_2'),
-    work_desc_3: v('work_desc_3'), work_desc_4: v('work_desc_4'),
-    ref_contact_pos: v('ref_contact_pos'), ref_contact_tel: v('ref_contact_tel'),
-    ref1_name: v('ref1_name'), ref1_tel: v('ref1_tel'),
-    ref2_name: v('ref2_name'), ref2_tel: v('ref2_tel'),
-    emr1_name: v('emr1_name'), emr1_tel: v('emr1_tel'),
+
+    // ----- แนะนำตัว -----
     self_desc: v('self_desc'),
+
+    // ----- การศึกษา 1..4 -----
+    edu_level_1: v('edu_level_1'), edu_school_1: v('edu_school_1'),
+    edu_gpa_1:   v('edu_gpa_1'),   edu_major_1:  v('edu_major_1'), edu_year_1: v('edu_year_1'),
+    edu_level_2: v('edu_level_2'), edu_school_2: v('edu_school_2'),
+    edu_gpa_2:   v('edu_gpa_2'),   edu_major_2:  v('edu_major_2'), edu_year_2: v('edu_year_2'),
+    edu_level_3: v('edu_level_3'), edu_school_3: v('edu_school_3'),
+    edu_gpa_3:   v('edu_gpa_3'),   edu_major_3:  v('edu_major_3'), edu_year_3: v('edu_year_3'),
+    edu_level_4: v('edu_level_4'), edu_school_4: v('edu_school_4'),
+    edu_gpa_4:   v('edu_gpa_4'),   edu_major_4:  v('edu_major_4'), edu_year_4: v('edu_year_4'),
+
+    internship: v('internship'),
+    training:   v('training'),
+
+    // ----- งาน 1..4 (ทุกฟิลด์) -----
+    work_co_1: v('work_co_1'), work_from_1: v('work_from_1'), work_to_1: v('work_to_1'),
+    work_pos_start_1: v('work_pos_start_1'), work_pos_end_1: v('work_pos_end_1'),
+    work_salary_1: v('work_salary_1'), work_reason_1: v('work_reason_1'), work_desc_1: v('work_desc_1'),
+
+    work_co_2: v('work_co_2'), work_from_2: v('work_from_2'), work_to_2: v('work_to_2'),
+    work_pos_start_2: v('work_pos_start_2'), work_pos_end_2: v('work_pos_end_2'),
+    work_salary_2: v('work_salary_2'), work_reason_2: v('work_reason_2'), work_desc_2: v('work_desc_2'),
+
+    work_co_3: v('work_co_3'), work_from_3: v('work_from_3'), work_to_3: v('work_to_3'),
+    work_pos_start_3: v('work_pos_start_3'), work_pos_end_3: v('work_pos_end_3'),
+    work_salary_3: v('work_salary_3'), work_reason_3: v('work_reason_3'), work_desc_3: v('work_desc_3'),
+
+    work_co_4: v('work_co_4'), work_from_4: v('work_from_4'), work_to_4: v('work_to_4'),
+    work_pos_start_4: v('work_pos_start_4'), work_pos_end_4: v('work_pos_end_4'),
+    work_salary_4: v('work_salary_4'), work_reason_4: v('work_reason_4'), work_desc_4: v('work_desc_4'),
+
+    start_days: v('start_days'),
+
+    // ----- ภาษา 1..3 (ฟัง/พูด/อ่าน/เขียน ครบ) -----
+    lang1: v('lang1'), lang1_listen: v('lang1_listen'), lang1_speak: v('lang1_speak'),
+    lang1_read: v('lang1_read'), lang1_write: v('lang1_write'),
+    lang2: v('lang2'), lang2_listen: v('lang2_listen'), lang2_speak: v('lang2_speak'),
+    lang2_read: v('lang2_read'), lang2_write: v('lang2_write'),
+    lang3: v('lang3'), lang3_listen: v('lang3_listen'), lang3_speak: v('lang3_speak'),
+    lang3_read: v('lang3_read'), lang3_write: v('lang3_write'),
+
+    // ----- ทักษะคอมพิวเตอร์ + พิมพ์ดีด -----
+    skills: skills.join(', '),
+    sk_other: v('sk_other'),
+    type_th: v('type_th'), type_en: v('type_en'),
+
+    // ----- ใบขับขี่ + ขับขี่ -----
+    drive_car: driveCar + (radVal('car_license') ? ' (' + radVal('car_license') + ')' : ''),
+    car_license_no: v('car_license_no'),
+    drive_moto: driveMoto + (radVal('moto_license') ? ' (' + radVal('moto_license') + ')' : ''),
+    moto_license_no: v('moto_license_no'),
+
+    // ----- สุขภาพ / ประวัติ (รวม radio + detail) -----
+    chronic_detail:    hv('chronic',    'chronic_detail'),
+    pregnant_detail:   hv('pregnant',   'pregnant_detail'),
+    accident_detail:   hv('accident',   'accident_detail'),
+    crime_detail:      hv('crime',      'crime_detail'),
+    drug_detail:       hv('drug',       'drug_detail'),
+    substance_detail:  hv('substance',  'substance_detail'),
+    disability_detail: hv('disability', 'disability_detail'),
+
+    // ----- งานอดิเรก + ทักษะพิเศษ -----
+    hobby: v('hobby'),
+    special_skills: v('special_skills'),
+
+    // ----- แหล่งทราบข่าวรับสมัคร -----
+    ref_reason:      v('ref_reason'),
+    ref_contact:     v('ref_contact'),
+    ref_contact_pos: v('ref_contact_pos'),
+    ref_contact_tel: v('ref_contact_tel'),
+
+    // ----- บุคคลอ้างอิง 1-2 (ครบทุกฟิลด์) -----
+    ref1_name: v('ref1_name'), ref1_addr: v('ref1_addr'),
+    ref1_pos:  v('ref1_pos'),  ref1_rel:  v('ref1_rel'),  ref1_tel: v('ref1_tel'),
+    ref2_name: v('ref2_name'), ref2_addr: v('ref2_addr'),
+    ref2_pos:  v('ref2_pos'),  ref2_rel:  v('ref2_rel'),  ref2_tel: v('ref2_tel'),
+
+    // ----- ผู้ติดต่อฉุกเฉิน 1-2 -----
+    emr1_name: v('emr1_name'), emr1_addr: v('emr1_addr'),
+    emr1_rel:  v('emr1_rel'),  emr1_tel:  v('emr1_tel'),
+    emr2_name: v('emr2_name'), emr2_addr: v('emr2_addr'),
+    emr2_rel:  v('emr2_rel'),  emr2_tel:  v('emr2_tel'),
   };
 }
 
